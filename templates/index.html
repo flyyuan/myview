@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XHR Request Example</title>
+</head>
+<body>
+    <input  value="Start Requesting" id="myButton">
+
+    <script>
+        let intervalId;
+
+        document.getElementById("myButton").addEventListener("click", function() {
+            if (intervalId) {
+                clearInterval(intervalId);  // 如果已经在请求，则停止
+                intervalId = null;
+                document.getElementById("myButton").value = "Start Requesting";
+            } else {
+                intervalId = setInterval(function() {
+                    fetch("/get_status/")
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status) {
+                                console.log("Status is true");
+                            } else {
+                                console.log("Status is false");
+                            }
+                        });
+                }, 2000);  // 每两秒请求一次
+                document.getElementById("myButton").value = "Stop Requesting";
+            }
+        });
+    </script>
+</body>
+</html>
